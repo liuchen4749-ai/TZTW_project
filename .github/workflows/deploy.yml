@@ -1,36 +1,38 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [ main ]
+
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          # 👈 这里去掉了 cache: 'npm'，解决了找不到锁定文件的报错
+
       - name: Install dependencies
+        # 👈 使用 npm install 而不是 npm ci，因为它不需要锁定文件
         run: npm install
-      - name: Build
+
+      - name: Build project
         run: npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+    permissions:
+      pages: write
+      id-token: write
