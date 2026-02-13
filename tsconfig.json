@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ESNext",
     "useDefineForClassFields": false,
     "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -11,15 +11,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    
-    /* 👇 核心修改：关闭所有严格检查，允许编译通过 */
     "strict": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    
-    /* 路径别名支持 */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
