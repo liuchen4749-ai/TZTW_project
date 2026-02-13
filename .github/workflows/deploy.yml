@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,16 +13,24 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - name: Install
+      - name: Install dependencies
         run: npm install
       - name: Build
         run: npm run build
-      - name: Upload
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+  deploy:
+    needs: build
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
